@@ -1,0 +1,62 @@
+A51 MACRO ASSEMBLER  QUANTIZATION                                                         01/23/2023 15:43:24 PAGE     1
+
+
+MACRO ASSEMBLER A51 V8.2.7.0
+OBJECT MODULE PLACED IN .\Objects\quantization.obj
+ASSEMBLER INVOKED BY: C:\Keil_v5\C51\BIN\A51.EXE quantization.asm SET(SMALL) DEBUG PRINT(.\Listings\quantization.lst) OB
+                      JECT(.\Objects\quantization.obj) EP
+
+LOC  OBJ            LINE     SOURCE
+
+0000                   1     ORG 0H
+0000 020100            2     LJMP MAIN
+0100                   3     ORG 100H
+0100                   4     MAIN: 
+0100 3130              5     CALL QUANT 
+0102 80FE              6     HERE: SJMP HERE 
+0130                   7     ORG 130H
+                       8     
+0130                   9     QUANT: 
+0130 785F             10     MOV R0, #5FH
+0132 796F             11     MOV R1, #6FH
+0134                  12     OUTERLOOP:  
+0134 C3               13     CLR C
+0135 7A05             14     MOV R2, #05H  
+0137 7B03             15     MOV R3, #03H  
+0139 08               16     INC R0
+013A 09               17     INC R1
+013B                  18     INNERLOOP:  
+013B E6               19     MOV A, @R0
+013C 940A             20     SUBB A, #0AH
+013E F6               21     MOV @R0, A
+013F 4006             22     JC SETVALUE
+0141 EA               23     MOV A, R2
+0142 240A             24     ADD A, #0AH
+0144 FA               25     MOV R2, A
+0145 DBF4             26     DJNZ R3, INNERLOOP
+0147                  27     SETVALUE:  
+0147 EA               28     MOV A, R2
+0148 F7               29     MOV @R1, A
+0149 B977E8           30     CJNE R1, #77H, OUTERLOOP
+014C 22               31     RET 
+                      32     END
+A51 MACRO ASSEMBLER  QUANTIZATION                                                         01/23/2023 15:43:24 PAGE     2
+
+SYMBOL TABLE LISTING
+------ ----- -------
+
+
+N A M E             T Y P E  V A L U E   ATTRIBUTES
+
+HERE . . . . . . .  C ADDR   0102H   A   
+INNERLOOP. . . . .  C ADDR   013BH   A   
+MAIN . . . . . . .  C ADDR   0100H   A   
+OUTERLOOP. . . . .  C ADDR   0134H   A   
+QUANT. . . . . . .  C ADDR   0130H   A   
+SETVALUE . . . . .  C ADDR   0147H   A   
+
+
+REGISTER BANK(S) USED: 0 
+
+
+ASSEMBLY COMPLETE.  0 WARNING(S), 0 ERROR(S)

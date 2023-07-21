@@ -1,0 +1,113 @@
+C51 COMPILER V9.60.7.0   KEYPAD                                                            03/06/2023 14:48:25 PAGE 1   
+
+
+C51 COMPILER V9.60.7.0, COMPILATION OF MODULE KEYPAD
+OBJECT MODULE PLACED IN .\Objects\keypad.obj
+COMPILER INVOKED BY: C:\Keil_v5\C51\BIN\C51.EXE keypad.c OPTIMIZE(8,SPEED) BROWSE DEBUG OBJECTEXTEND PRINT(.\Listings\ke
+                    -ypad.lst) TABS(2) OBJECT(.\Objects\keypad.obj)
+
+line level    source
+
+   1          #include <at89c5131.h>
+   2          #include "lcd.h"
+   3          
+   4          unsigned char correct_pass[]="15A8*D6#";
+   5          code unsigned char rows[] = "123A456B789C*0#D";
+   6          unsigned char addr;
+   7          unsigned char input;
+   8          unsigned char check;
+   9          unsigned char input_pass[] = "        ";
+  10          unsigned char i;
+  11          unsigned char j;
+  12          bit correct = 0x50;
+  13          
+  14          void main()
+  15          {
+  16   1        correct = 1;
+  17   1        lcd_init();
+  18   1        lcd_cmd(0x80);                          //Move cursor to first line
+  19   1        msdelay(4);
+  20   1        lcd_write_string("Enter Password: ");
+  21   1        lcd_cmd(0xC0);                          //Move cursor to 2nd line of LCD
+  22   1        msdelay(4);
+  23   1        P1 = 0x00;
+  24   1        
+  25   1        for(j = 0; j<8; j++){
+  26   2          while(1){                               //Will keep running till a key is pressed
+  27   3            addr = 0;
+  28   3            P3 = 0x0F;                            //Ground all rows, read all columns
+  29   3            msdelay(10);
+  30   3            input = P3&0x0F;
+  31   3            //P1 = input << 4;
+  32   3            while(input != 0x0F){                 //Wait for all keys to be released
+  33   4              input = P3&0x0F;
+  34   4              P1 = 0x10;
+  35   4            }
+  36   3            msdelay(10);
+  37   3            while(input == 0x0F) {                //Wait for any key to be pressed
+  38   4              input = P3&0x0F;
+  39   4              P1 = 0x20;
+  40   4            }
+  41   3            msdelay(20);                          //Debounce delay
+  42   3            input = P3&0x0F;
+  43   3            if(input != 0x0F){
+  44   4              P1 = 0x40;
+  45   4              check = 0x10;
+  46   4              for(i = 0; i<4; i++){               //Check all rows
+  47   5                P3 = 0xFF - check;
+  48   5                input = P3&0x0F;
+  49   5                if(input != 0x0F){                //Scan all columns of that row
+  50   6                  input = 0x0F - input;
+  51   6                  while(input != 0x08){
+  52   7                    addr = addr + 1;
+  53   7                    input = input << 1;
+  54   7                  }
+C51 COMPILER V9.60.7.0   KEYPAD                                                            03/06/2023 14:48:25 PAGE 2   
+
+  55   6                  input = rows[addr];             //Get the character corresponding to input button
+  56   6                  lcd_write_char(input);          //Write the character to the lcd
+  57   6                  input_pass[j] = input;          //Store input of keyboard in an array
+  58   6                  if (input != correct_pass[j]) correct = 0; //Check validity of password for every input
+  59   6                  goto afterinputloop;
+  60   6                }
+  61   5                addr = addr + 4;
+  62   5                check = check << 1;
+  63   5              }
+  64   4              break;
+  65   4            }
+  66   3          }
+  67   2          afterinputloop:
+  68   2          addr = 0;
+  69   2        }
+  70   1      
+  71   1        if(correct == 1){
+  72   2          lcd_cmd(0x80);                          //Move cursor to first line
+  73   2          msdelay(4);
+  74   2          lcd_write_string("Correct Password");
+  75   2          lcd_cmd(0xC0);                          //Move cursor to 2nd line of LCD
+  76   2          msdelay(4);
+  77   2          lcd_write_string(" Access Granted ");
+  78   2        } else {
+  79   2          lcd_cmd(0x80);                          //Move cursor to first line
+  80   2          msdelay(4);
+  81   2          lcd_write_string(" Wrong Password ");
+  82   2          lcd_cmd(0xC0);                          //Move cursor to 2nd line of LCD
+  83   2          msdelay(4);
+  84   2          lcd_write_string(" Access Denied  ");
+  85   2        }
+  86   1        while(1);
+  87   1      }
+
+
+MODULE INFORMATION:   STATIC OVERLAYABLE
+   CODE SIZE        =    447    ----
+   CONSTANT SIZE    =    102    ----
+   XDATA SIZE       =   ----    ----
+   PDATA SIZE       =   ----    ----
+   DATA SIZE        =     23       3
+   IDATA SIZE       =   ----    ----
+   BIT SIZE         =      1    ----
+END OF MODULE INFORMATION.
+
+
+C51 COMPILATION COMPLETE.  0 WARNING(S),  0 ERROR(S)

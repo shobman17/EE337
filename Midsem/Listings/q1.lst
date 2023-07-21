@@ -1,0 +1,151 @@
+A51 MACRO ASSEMBLER  Q1                                                                   02/12/2023 11:24:54 PAGE     1
+
+
+MACRO ASSEMBLER A51 V8.2.7.0
+OBJECT MODULE PLACED IN .\Objects\q1.obj
+ASSEMBLER INVOKED BY: C:\Keil_v5\C51\BIN\A51.EXE q1.asm SET(SMALL) DEBUG PRINT(.\Listings\q1.lst) OBJECT(.\Objects\q1.ob
+                      j) EP
+
+LOC  OBJ            LINE     SOURCE
+
+0000                   1     ORG 0H
+0000 020100            2     LJMP MAIN
+0100                   3     ORG 100H
+                       4     
+0100                   5     MAIN:
+0100 3161              6     CALL FINDKEY
+0102 31A9              7     HERE: CALL DISPLAY
+0104 80FC              8     SJMP HERE  
+0130                   9     ORG 130H
+                      10             
+0130                  11     delay_250us:
+0130 C000             12     push 00h
+0132 78F4             13     mov r0, #244
+0134 D8FE             14     h1: djnz r0, h1
+0136 D000             15     pop 00h
+0138 22               16     ret
+                      17     
+0139                  18     delay_5S:  
+0139 C000             19     push 00h
+013B C001             20     push 01h
+013D 7850             21     mov r0, #80
+013F 79FA             22     h4: mov r1, #250
+0141 120130           23     h3: lcall delay_250us
+0144 D9FB             24     djnz r1, h3
+0146 D8F7             25     djnz r0, h4
+0148 D001             26     pop 01h
+014A D000             27     pop 00h
+014C 22               28     ret
+                      29     
+014D                  30     delay_1S:  
+014D C000             31     push 00h
+014F C001             32     push 01h
+0151 7850             33     mov r0, #80
+0153 7932             34     h6: mov r1, #50
+0155 120130           35     h5: lcall delay_250us
+0158 D9FB             36     djnz r1, h5
+015A D8F7             37     djnz r0, h6
+015C D001             38     pop 01h
+015E D000             39     pop 00h
+0160 22               40     ret
+                      41             
+0161                  42     FINDKEY:
+0161 C000             43     PUSH 00H
+0163 7570D8           44     MOV 70H, #216
+0166 7571AD           45     MOV 71H, #173
+0169 7800             46     MOV R0, #0  
+016B                  47     LOOPFIND:
+016B 08               48     INC R0
+016C E570             49     MOV A, 70H
+016E 88F0             50     MOV B, R0  
+0170 A4               51     MUL AB  
+0171 2401             52     ADD A, #1  
+0173 FA               53     MOV R2, A
+0174 E5F0             54     MOV A, B
+0176 3400             55     ADDC A, #0
+0178 FB               56     MOV R3, A
+                      57     
+A51 MACRO ASSEMBLER  Q1                                                                   02/12/2023 11:24:54 PAGE     2
+
+                      58     
+0179 758200           59     MOV 82H, #0
+017C 3184             60     CALL MODULUSE
+017E BFAAEA           61     CJNE R7, #0AAH, LOOPFIND
+0181 D000             62     POP 00H
+0183 22               63     RET
+                      64     
+0184                  65     MODULUSE:
+0184 C000             66     PUSH 00H
+0186 C001             67     PUSH 01H
+0188 C285             68     CLR 85H
+018A A871             69     MOV R0, 71H
+018C 7900             70     MOV R1, #0  
+                      71     
+                      72     
+018E                  73     MODULOLOOP:
+018E EA               74     MOV A, R2
+018F 98               75     SUBB A, R0
+0190 FA               76     MOV R2, A
+0191 5006             77     JNC CHECK
+0193 EB               78     MOV A, R3
+0194 9400             79     SUBB A, #00H
+0196 400C             80     JC EXIT  
+0198 FB               81     MOV R3, A
+0199 09               82     CHECK: INC R1
+019A BA00F1           83     CJNE R2, #0, MODULOLOOP
+019D BB00EE           84     CJNE R3, #0, MODULOLOOP
+01A0 8972             85     MOV 72H, R1
+01A2 7FAA             86     MOV r7, #0AAH
+01A4                  87     EXIT:
+01A4 D001             88     POP 01H
+01A6 D000             89     POP 00H
+01A8 22               90     RET
+                      91     
+                      92     
+01A9                  93     DISPLAY:
+01A9 E572             94     MOV A, 72H
+01AB F590             95     MOV P1, A
+01AD 3139             96     CALL delay_5S
+01AF 759000           97     MOV P1, #00H
+01B2 314D             98     CALL delay_1S
+01B4 C4               99     SWAP A
+01B5 F590            100     MOV P1, A
+01B7 3139            101     CALL delay_5S
+01B9 759000          102     MOV P1, #00H
+01BC 314D            103     CALL delay_1S
+01BE 22              104     RET
+                     105     
+                     106     END
+A51 MACRO ASSEMBLER  Q1                                                                   02/12/2023 11:24:54 PAGE     3
+
+SYMBOL TABLE LISTING
+------ ----- -------
+
+
+N A M E             T Y P E  V A L U E   ATTRIBUTES
+
+B. . . . . . . . .  D ADDR   00F0H   A   
+CHECK. . . . . . .  C ADDR   0199H   A   
+DELAY_1S . . . . .  C ADDR   014DH   A   
+DELAY_250US. . . .  C ADDR   0130H   A   
+DELAY_5S . . . . .  C ADDR   0139H   A   
+DISPLAY. . . . . .  C ADDR   01A9H   A   
+EXIT . . . . . . .  C ADDR   01A4H   A   
+FINDKEY. . . . . .  C ADDR   0161H   A   
+H1 . . . . . . . .  C ADDR   0134H   A   
+H3 . . . . . . . .  C ADDR   0141H   A   
+H4 . . . . . . . .  C ADDR   013FH   A   
+H5 . . . . . . . .  C ADDR   0155H   A   
+H6 . . . . . . . .  C ADDR   0153H   A   
+HERE . . . . . . .  C ADDR   0102H   A   
+LOOPFIND . . . . .  C ADDR   016BH   A   
+MAIN . . . . . . .  C ADDR   0100H   A   
+MODULOLOOP . . . .  C ADDR   018EH   A   
+MODULUSE . . . . .  C ADDR   0184H   A   
+P1 . . . . . . . .  D ADDR   0090H   A   
+
+
+REGISTER BANK(S) USED: 0 
+
+
+ASSEMBLY COMPLETE.  0 WARNING(S), 0 ERROR(S)

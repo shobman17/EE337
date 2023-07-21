@@ -1,0 +1,114 @@
+A51 MACRO ASSEMBLER  CHECK                                                                02/12/2023 12:09:43 PAGE     1
+
+
+MACRO ASSEMBLER A51 V8.2.7.0
+OBJECT MODULE PLACED IN .\Objects\check.obj
+ASSEMBLER INVOKED BY: C:\Keil_v5\C51\BIN\A51.EXE check.asm SET(SMALL) DEBUG PRINT(.\Listings\check.lst) OBJECT(.\Objects
+                      \check.obj) EP
+
+LOC  OBJ            LINE     SOURCE
+
+0000                   1     ORG 0H
+0000 020100            2     LJMP MAIN
+0100                   3     ORG 100H
+                       4     
+0100                   5     MAIN:
+0100 757505            6     MOV 75H, #5H
+0103 757302            7     MOV 73H, #02H
+0106 757471            8     MOV 74H, #71H
+0109 315F              9     CALL MULT
+010B 80FE             10     HERE: SJMP HERE
+0130                  11     ORG 130H
+                      12     
+0130                  13     MODULUS:
+0130 C000             14     PUSH 00H
+0132 C001             15     PUSH 01H
+0134 C002             16     PUSH 02H
+0136 C003             17     PUSH 03H
+0138 C285             18     CLR 85H
+013A A870             19     MOV R0, 70H  
+013C 7900             20     MOV R1, #0  
+013E AA74             21     MOV R2, 74H  
+0140 AB73             22     MOV R3, 73H  
+0142                  23     MODULOLOOP:
+0142 EA               24     MOV A, R2
+0143 98               25     SUBB A, R0
+0144 FA               26     MOV R2, A
+0145 5006             27     JNC CHECK
+0147 EB               28     MOV A, R3
+0148 9400             29     SUBB A, #00H
+014A 400A             30     JC EXIT  
+014C FB               31     MOV R3, A
+014D 09               32     CHECK: INC R1
+014E 8A73             33     MOV 73H, R2  
+0150 BA00EF           34     CJNE R2, #0, MODULOLOOP
+0153 BB00EC           35     CJNE R3, #0, MODULOLOOP
+0156                  36     EXIT:
+0156 D003             37     POP 03H
+0158 D002             38     POP 02H
+015A D001             39     POP 01H
+015C D000             40     POP 00H
+015E 22               41     RET
+                      42     
+015F                  43     MULT:
+015F C000             44     PUSH 00H
+0161 C001             45     PUSH 01H
+0163 C002             46     PUSH 02H
+0165 C003             47     PUSH 03H
+0167 C004             48     PUSH 04H
+                      49     
+0169 A873             50     MOV R0, 73H  
+016B A974             51     MOV R1, 74H  
+016D 7A00             52     MOV R2, #0  
+016F 7B00             53     MOV R3, #0  
+0171 AC75             54     MOV R4, 75H
+0173                  55     MULTLOOP:
+0173 EA               56     MOV A, R2
+0174 2C               57     ADD A, R4
+A51 MACRO ASSEMBLER  CHECK                                                                02/12/2023 12:09:43 PAGE     2
+
+0175 FA               58     MOV R2, A
+0176 EB               59     MOV A, R3
+0177 3400             60     ADDC A, #0
+0179 FB               61     MOV R3, A
+017A 19               62     DEC R1
+017B B900F5           63     CJNE R1, #0, MULTLOOP
+017E B8000F           64     CJNE R0, #0, DECR0
+0181 8B73             65     MOV 73H, R3
+0183 8A74             66     MOV 74H, R2
+                      67     
+0185 D004             68     POP 04H
+0187 D003             69     POP 03H
+0189 D002             70     POP 02H
+018B D001             71     POP 01H
+018D D000             72     POP 00H
+018F 22               73     RET
+                      74     
+0190 18               75     DECR0: DEC R0
+0191 020173           76     LJMP MULTLOOP
+                      77     
+                      78     
+                      79     END
+A51 MACRO ASSEMBLER  CHECK                                                                02/12/2023 12:09:43 PAGE     3
+
+SYMBOL TABLE LISTING
+------ ----- -------
+
+
+N A M E             T Y P E  V A L U E   ATTRIBUTES
+
+CHECK. . . . . . .  C ADDR   014DH   A   
+DECR0. . . . . . .  C ADDR   0190H   A   
+EXIT . . . . . . .  C ADDR   0156H   A   
+HERE . . . . . . .  C ADDR   010BH   A   
+MAIN . . . . . . .  C ADDR   0100H   A   
+MODULOLOOP . . . .  C ADDR   0142H   A   
+MODULUS. . . . . .  C ADDR   0130H   A   
+MULT . . . . . . .  C ADDR   015FH   A   
+MULTLOOP . . . . .  C ADDR   0173H   A   
+
+
+REGISTER BANK(S) USED: 0 
+
+
+ASSEMBLY COMPLETE.  0 WARNING(S), 0 ERROR(S)

@@ -1,0 +1,82 @@
+ORG 0H
+LJMP MAIN
+ORG 100H
+
+MAIN:
+MOV 70H, #247
+MOV 75H, #5H
+MOV 73H, #02H
+MOV 74H, #71H
+CALL MULT
+CALL MODULUS
+HERE: SJMP HERE
+ORG 130H
+
+MODULUS:
+PUSH 00H
+PUSH 01H
+PUSH 02H
+PUSH 03H
+CLR 85H
+MOV R0, 70H // modulus
+MOV R1, #0 // number of times subtraction has been done
+MOV R2, 74H // least sig
+MOV R3, 73H // most sig
+MODULOLOOP:
+MOV A, R2
+SUBB A, R0
+MOV R2, A
+JNC CHECK
+MOV A, R3
+SUBB A, #00H
+JC EXIT // if overflow, number is not divisible
+MOV R3, A
+CHECK: INC R1
+MOV 73H, R2 // we need to store modulus baba
+CJNE R2, #0, MODULOLOOP
+CJNE R3, #0, MODULOLOOP
+MOV r7, #0AAH
+EXIT:
+POP 03H
+POP 02H
+POP 01H
+POP 00H
+RET
+
+MULT:
+PUSH 00H
+PUSH 01H
+PUSH 02H
+PUSH 03H
+PUSH 04H
+
+MOV R0, 73H // most sig
+MOV R1, 74H // least sig
+MOV R2, #0 // cumulative least sig
+MOV R3, #0 // cumulative most sig
+MOV R4, 75H
+MULTLOOP:
+MOV A, R2
+ADD A, R4
+MOV R2, A
+MOV A, R3
+ADDC A, #0
+MOV R3, A
+DEC R1
+CJNE R1, #0, MULTLOOP
+CJNE R0, #0, DECR0
+MOV 73H, R3
+MOV 74H, R2
+
+POP 04H
+POP 03H
+POP 02H
+POP 01H
+POP 00H
+RET
+
+DECR0: DEC R0
+LJMP MULTLOOP
+
+
+END

@@ -1,0 +1,84 @@
+A51 MACRO ASSEMBLER  BUBBLESORT                                                           01/16/2023 14:51:58 PAGE     1
+
+
+MACRO ASSEMBLER A51 V8.2.7.0
+OBJECT MODULE PLACED IN .\Objects\bubblesort.obj
+ASSEMBLER INVOKED BY: C:\Keil_v5\C51\BIN\A51.EXE bubblesort.asm SET(SMALL) DEBUG PRINT(.\Listings\bubblesort.lst) OBJECT
+                      (.\Objects\bubblesort.obj) EP
+
+LOC  OBJ            LINE     SOURCE
+
+                       1     
+0000                   2     ORG 0H 
+0000 020100            3     LJMP MAIN 
+0100                   4     ORG 100H 
+0100                   5     MAIN: 
+0100 3130              6     CALL SORT 
+0102 80FE              7             HERE: SJMP HERE 
+0130                   8     ORG 130H 
+                       9     
+                      10     
+0130                  11     SORT:  
+0130 7A68             12     MOV R2, #68H  
+                      13     
+0132                  14     OUTERLOOP:
+0132 C3               15     CLR C
+0133 785F             16     MOV R0, #5FH  
+0135 7960             17     MOV R1, #60H
+0137 1A               18     DEC R2
+0138 EA               19     MOV A, R2
+                      20     
+0139 99               21     SUBB A, R1
+013A 6010             22     JZ ENDLOOP
+                      23     
+013C                  24     INNERLOOP:
+                      25     
+013C C3               26     CLR C
+013D 08               27     INC R0
+013E 09               28     INC R1
+013F E8               29     MOV A, R0
+0140 9A               30     SUBB A, R2
+0141 60EF             31     JZ OUTERLOOP  
+                      32     
+0143 E7               33     MOV A, @R1
+0144 96               34     SUBB A, @R0
+0145 50F5             35     JNC INNERLOOP  
+                      36     
+0147 E6               37     MOV A, @R0  
+0148 C7               38     XCH A, @R1  
+0149 C6               39     XCH A, @R0  
+014A 80F0             40     SJMP INNERLOOP
+                      41     
+014C                  42     ENDLOOP:  
+014C 856070           43     MOV 70H, 60H
+014F 856171           44     MOV 71H, 61H
+0152 856272           45     MOV 72H, 62H
+0155 856373           46     MOV 73H, 63H
+0158 856474           47     MOV 74H, 64H
+015B 856575           48     MOV 75H, 65H
+015E 856676           49     MOV 76H, 66H
+0161 856777           50     MOV 77H, 67H
+                      51     
+0164 22               52     RET 
+                      53     
+                      54     END
+A51 MACRO ASSEMBLER  BUBBLESORT                                                           01/16/2023 14:51:58 PAGE     2
+
+SYMBOL TABLE LISTING
+------ ----- -------
+
+
+N A M E             T Y P E  V A L U E   ATTRIBUTES
+
+ENDLOOP. . . . . .  C ADDR   014CH   A   
+HERE . . . . . . .  C ADDR   0102H   A   
+INNERLOOP. . . . .  C ADDR   013CH   A   
+MAIN . . . . . . .  C ADDR   0100H   A   
+OUTERLOOP. . . . .  C ADDR   0132H   A   
+SORT . . . . . . .  C ADDR   0130H   A   
+
+
+REGISTER BANK(S) USED: 0 
+
+
+ASSEMBLY COMPLETE.  0 WARNING(S), 0 ERROR(S)

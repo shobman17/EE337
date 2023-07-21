@@ -1,0 +1,96 @@
+A51 MACRO ASSEMBLER  DELAY                                                                02/06/2023 15:05:32 PAGE     1
+
+
+MACRO ASSEMBLER A51 V8.2.7.0
+OBJECT MODULE PLACED IN .\Objects\delay.obj
+ASSEMBLER INVOKED BY: C:\Keil_v5\C51\BIN\A51.EXE delay.asm SET(SMALL) DEBUG PRINT(.\Listings\delay.lst) OBJECT(.\Objects
+                      \delay.obj) EP
+
+LOC  OBJ            LINE     SOURCE
+
+0000                   1     ORG 0H
+0000 020100            2     LJMP MAIN
+0100                   3     ORG 100H
+0100                   4     MAIN:
+0100 759000            5     MOV P1, #0
+0103 3144              6     CALL DELAY_new
+0105 7590C8            7     MOV P1, #200
+0108 80FE              8     HERE: SJMP HERE
+0130                   9     ORG 130H
+                      10     
+0130                  11     delay_1ms:
+0130 C000             12     push 00h
+0132 7804             13     mov r0, #4
+0134 313B             14     h2: acall delay_250us
+0136 D8FC             15     djnz r0, h2
+0138 D000             16     pop 00h
+013A 22               17     ret
+                      18     
+013B                  19     delay_250us:
+013B C000             20     push 00h
+013D 78F4             21     mov r0, #244
+013F D8FE             22     h1: djnz r0, h1
+0141 D000             23     pop 00h
+0143 22               24     ret
+                      25     
+0144                  26     delay_new:
+0144 C000             27     push 00h
+0146 785F             28     mov r0, #95
+0148 D8FE             29     h10: djnz r0, h10
+014A D000             30     pop 00h
+014C 22               31     ret
+                      32     
+014D                  33     delay_5S:  
+014D C000             34     push 00h
+014F C001             35     push 01h
+0151 7850             36     mov r0, #80
+0153 79FA             37     h4: mov r1, #250
+0155 313B             38     h3: acall delay_250us
+0157 D9FC             39     djnz r1, h3
+0159 D8F8             40     djnz r0, h4
+015B D001             41     pop 01h
+015D D000             42     pop 00h
+015F 22               43     ret
+                      44     
+0160                  45     delay_10S:  
+0160 C000             46     push 00h
+0162 C001             47     push 01h
+0164 78A0             48     mov r0, #160
+0166 79FA             49     h6: mov r1, #250
+0168 313B             50     h5: acall delay_250us
+016A D9FC             51     djnz r1, h5
+016C D8F8             52     djnz r0, h6
+016E D001             53     pop 01h
+0170 D000             54     pop 00h
+0172 22               55     ret
+                      56     
+                      57     END
+A51 MACRO ASSEMBLER  DELAY                                                                02/06/2023 15:05:32 PAGE     2
+
+SYMBOL TABLE LISTING
+------ ----- -------
+
+
+N A M E             T Y P E  V A L U E   ATTRIBUTES
+
+DELAY_10S. . . . .  C ADDR   0160H   A   
+DELAY_1MS. . . . .  C ADDR   0130H   A   
+DELAY_250US. . . .  C ADDR   013BH   A   
+DELAY_5S . . . . .  C ADDR   014DH   A   
+DELAY_NEW. . . . .  C ADDR   0144H   A   
+H1 . . . . . . . .  C ADDR   013FH   A   
+H10. . . . . . . .  C ADDR   0148H   A   
+H2 . . . . . . . .  C ADDR   0134H   A   
+H3 . . . . . . . .  C ADDR   0155H   A   
+H4 . . . . . . . .  C ADDR   0153H   A   
+H5 . . . . . . . .  C ADDR   0168H   A   
+H6 . . . . . . . .  C ADDR   0166H   A   
+HERE . . . . . . .  C ADDR   0108H   A   
+MAIN . . . . . . .  C ADDR   0100H   A   
+P1 . . . . . . . .  D ADDR   0090H   A   
+
+
+REGISTER BANK(S) USED: 0 
+
+
+ASSEMBLY COMPLETE.  0 WARNING(S), 0 ERROR(S)

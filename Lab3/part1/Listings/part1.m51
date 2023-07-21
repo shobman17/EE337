@@ -1,0 +1,70 @@
+BL51 BANKED LINKER/LOCATER V6.22.4.0                                                    01/23/2023  15:43:24  PAGE 1
+
+
+BL51 BANKED LINKER/LOCATER V6.22.4.0, INVOKED BY:
+C:\KEIL_V5\C51\BIN\BL51.EXE .\Objects\quantization.obj TO .\Objects\part1 PRINT (.\Listings\part1.m51) RAMSIZE (256)
+
+
+INPUT MODULES INCLUDED:
+  .\Objects\quantization.obj (QUANTIZATION)
+
+
+LINK MAP OF MODULE:  .\Objects\part1 (QUANTIZATION)
+
+
+            TYPE    BASE      LENGTH    RELOCATION   SEGMENT NAME
+            -----------------------------------------------------
+
+            * * * * * * *   D A T A   M E M O R Y   * * * * * * *
+            REG     0000H     0008H     ABSOLUTE     "REG BANK 0"
+
+            * * * * * * *   C O D E   M E M O R Y   * * * * * * *
+            CODE    0000H     014DH     ABSOLUTE     
+
+
+
+SYMBOL TABLE OF MODULE:  .\Objects\part1 (QUANTIZATION)
+
+  VALUE           TYPE          NAME
+  ----------------------------------
+
+  -------         MODULE        QUANTIZATION
+  C:0102H         SYMBOL        HERE
+  C:013BH         SYMBOL        INNERLOOP
+  C:0100H         SYMBOL        MAIN
+  C:0134H         SYMBOL        OUTERLOOP
+  C:0130H         SYMBOL        QUANT
+  C:0147H         SYMBOL        SETVALUE
+  C:0000H         LINE#         2
+  C:0100H         LINE#         5
+  C:0102H         LINE#         6
+  C:0130H         LINE#         10
+  C:0132H         LINE#         11
+  C:0134H         LINE#         13
+  C:0135H         LINE#         14
+  C:0137H         LINE#         15
+  C:0139H         LINE#         16
+  C:013AH         LINE#         17
+  C:013BH         LINE#         19
+  C:013CH         LINE#         20
+  C:013EH         LINE#         21
+  C:013FH         LINE#         22
+  C:0141H         LINE#         23
+  C:0142H         LINE#         24
+  C:0144H         LINE#         25
+  C:0145H         LINE#         26
+  C:0147H         LINE#         28
+  C:0148H         LINE#         29
+  C:0149H         LINE#         30
+  C:014CH         LINE#         31
+  -------         ENDMOD        QUANTIZATION
+
+BL51 BANKED LINKER/LOCATER V6.22.4.0                                                  01/23/2023  15:43:24  PAGE 2
+
+
+******************************************************************************
+* RESTRICTED VERSION WITH 0800H BYTE CODE SIZE LIMIT; USED: 0024H BYTE ( 1%) *
+******************************************************************************
+
+Program Size: data=8.0 xdata=0 code=333
+LINK/LOCATE RUN COMPLETE.  0 WARNING(S),  0 ERROR(S)

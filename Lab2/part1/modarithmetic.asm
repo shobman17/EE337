@@ -1,0 +1,36 @@
+// DO NOT CHANGE ANYTHING UNTIL THE LINE--//
+ORG 0H
+LJMP MAIN 
+ORG 100H
+MAIN: 
+MOV R1, #61H
+CALL MODADD
+CALL MODSUB 
+HERE: SJMP HERE
+ORG 130H
+
+MODADD:
+MOV A, 70H
+ADD A, 71H
+JNC ADDCONT
+// Take care of overflow here
+ADD A, #3DH
+ADDCONT: 
+MOV B, R1
+DIV AB
+MOV 72H, B
+RET
+
+MODSUB:
+MOV A, 70H
+SUBB A, 71H
+JNC SUBCONT
+// Take care of underflow here
+SUBB A, #3DH // Taking care of the extra modulus from underflow
+SUBCONT: 
+MOV B, R1
+DIV AB
+MOV 73H, B
+RET 
+
+END

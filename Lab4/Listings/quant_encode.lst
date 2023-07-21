@@ -1,0 +1,198 @@
+A51 MACRO ASSEMBLER  QUANT_ENCODE                                                         01/30/2023 14:36:13 PAGE     1
+
+
+MACRO ASSEMBLER A51 V8.2.7.0
+OBJECT MODULE PLACED IN .\Objects\quant_encode.obj
+ASSEMBLER INVOKED BY: C:\Keil_v5\C51\BIN\A51.EXE quant_encode.asm SET(SMALL) DEBUG PRINT(.\Listings\quant_encode.lst) OB
+                      JECT(.\Objects\quant_encode.obj) EP
+
+LOC  OBJ            LINE     SOURCE
+
+                       1     
+0000                   2     ORG 0H
+0000 020100            3     LJMP MAIN
+0100                   4     ORG 100H
+0100                   5     MAIN:
+0100 3143              6     CALL TAKE_INP
+0102 31A4              7     CALL QUANT_ENC
+0104 31CC              8     HERE: CALL LED_DISP  
+0106 80FC              9     SJMP HERE
+0130                  10     ORG 130H
+                      11     
+                      12     
+0130                  13     DELAY:  
+0130 C000             14     push 00h
+0132 C001             15     push 01h
+0134 78A0             16     mov r0, #160
+0136 79FA             17     h6: mov r1, #250
+0138 31DB             18     h5: acall delay_250us
+013A D9FC             19     djnz r1, h5
+013C D8F8             20     djnz r0, h6
+013E D001             21     pop 01h
+0140 D000             22     pop 00h
+0142 22               23     ret
+                      24     
+0143                  25     TAKE_INP:
+                      26     
+                      27     
+0143 C000             28     PUSH 00H
+                      29     
+0145 75901F           30     MOV P1, #1Fh  
+0148 3130             31     CALL DELAY
+014A E590             32     MOV A, P1
+014C C4               33     SWAP A  
+014D 9401             34     SUBB A, #01H
+014F F8               35     MOV R0, A
+0150 75902F           36     MOV P1, #2Fh  
+0153 3130             37     CALL DELAY
+0155 E590             38     MOV A, P1
+0157 9420             39     SUBB A, #20H
+0159 28               40     ADD A, R0
+015A F560             41     MOV 60H, A  
+                      42     
+015C 75903F           43     MOV P1, #3Fh  
+015F 3130             44     CALL DELAY
+0161 E590             45     MOV A, P1
+0163 C4               46     SWAP A  
+0164 9403             47     SUBB A, #03H
+0166 F8               48     MOV R0, A
+0167 75904F           49     MOV P1, #4Fh  
+016A 3130             50     CALL DELAY
+016C E590             51     MOV A, P1
+016E 9440             52     SUBB A, #40H
+0170 28               53     ADD A, R0
+0171 F561             54     MOV 61H, A  
+                      55     
+0173 75905F           56     MOV P1, #5Fh  
+0176 3130             57     CALL DELAY
+A51 MACRO ASSEMBLER  QUANT_ENCODE                                                         01/30/2023 14:36:13 PAGE     2
+
+0178 E590             58     MOV A, P1
+017A C4               59     SWAP A  
+017B 9405             60     SUBB A, #05H
+017D F8               61     MOV R0, A
+017E 75906F           62     MOV P1, #6Fh  
+0181 3130             63     CALL DELAY
+0183 E590             64     MOV A, P1
+0185 9460             65     SUBB A, #60H
+0187 28               66     ADD A, R0
+0188 F562             67     MOV 62H, A  
+                      68     
+018A 75907F           69     MOV P1, #7Fh  
+018D 3130             70     CALL DELAY
+018F E590             71     MOV A, P1
+0191 C4               72     SWAP A  
+0192 9407             73     SUBB A, #07H
+0194 F8               74     MOV R0, A
+0195 75908F           75     MOV P1, #8Fh  
+0198 3130             76     CALL DELAY
+019A E590             77     MOV A, P1
+019C 9480             78     SUBB A, #80H
+019E 28               79     ADD A, R0
+019F F563             80     MOV 63H, A  
+                      81     
+01A1 D000             82     POP 00H
+01A3 22               83     RET
+                      84     
+01A4                  85     QUANT_ENC:
+                      86     
+                      87     
+                      88     
+01A4 C000             89     PUSH 00H
+01A6 C001             90     PUSH 01H
+01A8 C003             91     PUSH 03H
+                      92     
+01AA 785F             93     MOV R0, #5FH
+01AC 796F             94     MOV R1, #6FH
+01AE                  95     OUTERLOOP:  
+01AE C3               96     CLR C
+01AF 7B03             97     MOV R3, #03H  
+01B1 08               98     INC R0
+01B2 09               99     INC R1
+01B3 E6              100     MOV A, @R0
+01B4                 101     INNERLOOP:  
+01B4 940A            102     SUBB A, #0AH
+01B6 4002            103     JC SETVALUE
+01B8 DBFA            104     DJNZ R3, INNERLOOP
+01BA                 105     SETVALUE:  
+01BA 0B              106     INC R3
+01BB 7480            107     MOV A, #80H  
+01BD 03              108     ROLLA: RR A
+01BE DBFD            109     DJNZ R3, ROLLA
+01C0 23              110     RL A
+01C1 F7              111     MOV @R1, A
+01C2 B973E9          112     CJNE R1, #73H, OUTERLOOP
+                     113     
+                     114     
+01C5 D003            115     POP 03H
+01C7 D001            116     POP 01H
+01C9 D000            117     POP 00H
+01CB 22              118     RET
+                     119     
+01CC                 120     LED_DISP:
+                     121     
+01CC C000            122     PUSH 00H
+01CE 786F            123     MOV R0, #6FH
+A51 MACRO ASSEMBLER  QUANT_ENCODE                                                         01/30/2023 14:36:13 PAGE     3
+
+01D0                 124     OUTLOOP:
+01D0 08              125     INC R0
+01D1 8690            126     MOV P1, @R0
+01D3 31E4            127     CALL DELAY_5S
+01D5 B873F8          128     CJNE R0, #73H, OUTLOOP
+01D8 D000            129     POP 00H
+01DA 22              130     RET
+                     131     
+01DB                 132     delay_250us:
+01DB C000            133     push 00h
+01DD 78F4            134     mov r0, #244
+01DF D8FE            135     h1: djnz r0, h1
+01E1 D000            136     pop 00h
+01E3 22              137     ret
+                     138     
+01E4                 139     delay_5S:  
+01E4 C000            140     push 00h
+01E6 C001            141     push 01h
+01E8 7850            142     mov r0, #80
+01EA 79FA            143     h4: mov r1, #250
+01EC 31DB            144     h3: acall delay_250us
+01EE D9FC            145     djnz r1, h3
+01F0 D8F8            146     djnz r0, h4
+01F2 D001            147     pop 01h
+01F4 D000            148     pop 00h
+01F6 22              149     ret
+                     150     
+                     151     END
+A51 MACRO ASSEMBLER  QUANT_ENCODE                                                         01/30/2023 14:36:13 PAGE     4
+
+SYMBOL TABLE LISTING
+------ ----- -------
+
+
+N A M E             T Y P E  V A L U E   ATTRIBUTES
+
+DELAY. . . . . . .  C ADDR   0130H   A   
+DELAY_250US. . . .  C ADDR   01DBH   A   
+DELAY_5S . . . . .  C ADDR   01E4H   A   
+H1 . . . . . . . .  C ADDR   01DFH   A   
+H3 . . . . . . . .  C ADDR   01ECH   A   
+H4 . . . . . . . .  C ADDR   01EAH   A   
+H5 . . . . . . . .  C ADDR   0138H   A   
+H6 . . . . . . . .  C ADDR   0136H   A   
+HERE . . . . . . .  C ADDR   0104H   A   
+INNERLOOP. . . . .  C ADDR   01B4H   A   
+LED_DISP . . . . .  C ADDR   01CCH   A   
+MAIN . . . . . . .  C ADDR   0100H   A   
+OUTERLOOP. . . . .  C ADDR   01AEH   A   
+OUTLOOP. . . . . .  C ADDR   01D0H   A   
+P1 . . . . . . . .  D ADDR   0090H   A   
+QUANT_ENC. . . . .  C ADDR   01A4H   A   
+ROLLA. . . . . . .  C ADDR   01BDH   A   
+SETVALUE . . . . .  C ADDR   01BAH   A   
+TAKE_INP . . . . .  C ADDR   0143H   A   
+
+
+REGISTER BANK(S) USED: 0 
+
+
+ASSEMBLY COMPLETE.  0 WARNING(S), 0 ERROR(S)

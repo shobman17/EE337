@@ -1,0 +1,86 @@
+C51 COMPILER V9.60.7.0   MULT_ALG_THOMAS                                                   04/08/2023 14:56:17 PAGE 1   
+
+
+C51 COMPILER V9.60.7.0, COMPILATION OF MODULE MULT_ALG_THOMAS
+OBJECT MODULE PLACED IN .\Objects\mult_alg_thomas.obj
+COMPILER INVOKED BY: C:\Keil_v5\C51\BIN\C51.EXE mult_alg_thomas.c OPTIMIZE(8,SPEED) BROWSE DEBUG OBJECTEXTEND PRINT(.\Li
+                    -stings\mult_alg_thomas.lst) TABS(2) OBJECT(.\Objects\mult_alg_thomas.obj)
+
+line level    source
+
+   1          #include <at89c5131.h>
+   2          #include "lcd.h"
+   3          
+   4          long unsigned int x,y,x0,y0,x1,y1,z,z0,z1,z2;
+   5          //int count;
+   6          //int cycle = 33000; // in microseconds
+   7          char prod_string[11]={0,0,0,0,0,0,0,0,0,0,'\0'};  
+   8          char time_string[6] = {0,0,0,0,0,'\0'};
+   9          unsigned int time;
+  10          char i;
+  11          
+  12          //void timer0_isr () interrupt 1
+  13          //{
+  14          //   count++;
+  15          //   TR0 = 1;
+  16          //   TF0 = 0;
+  17          //   //Reload values for TH0 and TL0. Start timer 0.
+  18          //}
+  19          
+  20          void main(void) {
+  21   1        
+  22   1        x = 14571;
+  23   1        y = 8636;
+  24   1        //count = 0;
+  25   1        TMOD = 0x10; // Timer 0 in mode 1
+  26   1        TH1 = 0x00;
+  27   1        TL1 = 0x00;
+  28   1        TR1 = 1;
+  29   1      
+  30   1        x1 = x/10;
+  31   1        x0 = x%10;
+  32   1        y1 = y/10;
+  33   1        y0 = y%10;
+  34   1        z0 = x0*y0;
+  35   1        z1 = (x0+x1)*(y0+y1);
+  36   1        z2 = x1*y1;
+  37   1        z = z0 + (z1 -z0-z2)*(long unsigned int)10 + z2*(long unsigned int)100;
+  38   1        
+  39   1        TR1 = 0;
+  40   1        time = ((unsigned int)(TH1 << 8 | TL1))/2;
+  41   1        lcd_init();
+  42   1        msdelay(4);
+  43   1        
+  44   1        for(i = 9; i>=0;i--) {
+  45   2          prod_string[i] = (unsigned int)(z%10 + 48);
+  46   2          z = z - z%10;
+  47   2          z = z/10;
+  48   2        }
+  49   1      
+  50   1        int_to_string(time,time_string);
+  51   1        
+  52   1        lcd_cmd(0x80);
+  53   1        lcd_write_string("Prod1=");
+  54   1        lcd_write_string(prod_string);
+C51 COMPILER V9.60.7.0   MULT_ALG_THOMAS                                                   04/08/2023 14:56:17 PAGE 2   
+
+  55   1        lcd_cmd(0xC0);
+  56   1        lcd_write_string("Time1=");
+  57   1        lcd_write_string(time_string);
+  58   1        
+  59   1        while (1);
+  60   1      }
+
+
+MODULE INFORMATION:   STATIC OVERLAYABLE
+   CODE SIZE        =    878    ----
+   CONSTANT SIZE    =     14    ----
+   XDATA SIZE       =   ----    ----
+   PDATA SIZE       =   ----    ----
+   DATA SIZE        =     60       8
+   IDATA SIZE       =   ----    ----
+   BIT SIZE         =   ----    ----
+END OF MODULE INFORMATION.
+
+
+C51 COMPILATION COMPLETE.  0 WARNING(S),  0 ERROR(S)

@@ -1,0 +1,60 @@
+A51 MACRO ASSEMBLER  AVGFILTER                                                            01/23/2023 14:59:37 PAGE     1
+
+
+MACRO ASSEMBLER A51 V8.2.7.0
+OBJECT MODULE PLACED IN .\Objects\avgfilter.obj
+ASSEMBLER INVOKED BY: C:\Keil_v5\C51\BIN\A51.EXE avgfilter.asm SET(SMALL) DEBUG PRINT(.\Listings\avgfilter.lst) OBJECT(.
+                      \Objects\avgfilter.obj) EP
+
+LOC  OBJ            LINE     SOURCE
+
+0000                   1     ORG 0H 
+0000 020100            2     LJMP MAIN 
+0100                   3     ORG 100H 
+0100 3130              4     MAIN: CALL FILT 
+0102 80FE              5     HERE: SJMP HERE 
+0130                   6     ORG 130H 
+                       7     
+0130                   8     FILT: 
+0130 785F              9     MOV R0, #5FH  
+0132 796F             10     MOV R1, #6FH  
+0134                  11     OUTERLOOP:
+0134 08               12     INC R0
+0135 09               13     INC R1
+0136 7400             14     MOV A, #00H
+0138 75F004           15     MOV B, #04H
+013B 7A04             16     MOV R2, #04H  
+013D                  17     INNERLOOP:
+013D 26               18     ADD A, @R0
+013E 18               19     DEC R0
+013F DAFC             20     DJNZ R2, INNERLOOP
+0141                  21     SETVALUE:  
+0141 84               22     DIV AB
+0142 F7               23     MOV @R1, A
+0143 E8               24     MOV A, R0  
+0144 2404             25     ADD A, #04H
+0146 F8               26     MOV R0, A
+0147 B977EA           27     CJNE R1, #77H, OUTERLOOP
+014A 22               28     RET 
+                      29     END
+A51 MACRO ASSEMBLER  AVGFILTER                                                            01/23/2023 14:59:37 PAGE     2
+
+SYMBOL TABLE LISTING
+------ ----- -------
+
+
+N A M E             T Y P E  V A L U E   ATTRIBUTES
+
+B. . . . . . . . .  D ADDR   00F0H   A   
+FILT . . . . . . .  C ADDR   0130H   A   
+HERE . . . . . . .  C ADDR   0102H   A   
+INNERLOOP. . . . .  C ADDR   013DH   A   
+MAIN . . . . . . .  C ADDR   0100H   A   
+OUTERLOOP. . . . .  C ADDR   0134H   A   
+SETVALUE . . . . .  C ADDR   0141H   A   
+
+
+REGISTER BANK(S) USED: 0 
+
+
+ASSEMBLY COMPLETE.  0 WARNING(S), 0 ERROR(S)

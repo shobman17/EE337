@@ -1,0 +1,89 @@
+A51 MACRO ASSEMBLER  PLAY                                                                 02/06/2023 15:42:41 PAGE     1
+
+
+MACRO ASSEMBLER A51 V8.2.7.0
+OBJECT MODULE PLACED IN .\Objects\play.obj
+ASSEMBLER INVOKED BY: C:\Keil_v5\C51\BIN\A51.EXE play.asm SET(SMALL) DEBUG PRINT(.\Listings\play.lst) OBJECT(.\Objects\p
+                      lay.obj) EP
+
+LOC  OBJ            LINE     SOURCE
+
+0000                   1     ORG 0H
+0000 020105            2     LJMP MAIN
+0100                   3     ORG 100H
+0100 75901F            4     MOV P1, #1FH  
+0103 3130              5     CALL delay_50us  
+0105                   6     MAIN:
+0105 3144              7     CALL PLAYSONG
+0107 80FC              8     SJMP MAIN  
+0130                   9     ORG 130H
+                      10     
+0130                  11     delay_50us:
+0130 C000             12     push 00h
+0132 782B             13     mov r0, #43
+0134 D8FE             14     h1: djnz r0, h1
+0136 D000             15     pop 00h
+0138 22               16     ret
+                      17     
+0139                  18     delay_custom:  
+0139 C000             19     push 00h
+013B EA               20     mov A, r2
+013C F8               21     mov r0, A
+013D 3130             22     h8: acall delay_50us
+013F D8FC             23     djnz r0, h8
+0141 D000             24     pop 00h
+0143 22               25     ret
+                      26     
+0144                  27     PLAYSONG:
+0144 C000             28     PUSH 00H
+                      29     
+0146 78FF             30     MOV R0, #255
+0148 209317           31     JB P1.3, SETMA
+014B 209210           32     JB P1.2, SETGA
+014E 209109           33     JB P1.1, SETRE
+0151 209002           34     JB P1.0, SETSA
+0154 80EE             35     SJMP PLAYSONG
+0156 7A27             36     SETSA: MOV R2, #39
+0158 800A             37     SJMP PLAY
+015A 7A22             38     SETRE: MOV R2, #34
+015C 8006             39     SJMP PLAY
+015E 7A1F             40     SETGA: MOV R2, #31
+0160 8002             41     SJMP PLAY
+0162 7A1D             42     SETMA: MOV R2, #29
+0164                  43     PLAY: 
+0164 D287             44     SETB P0.7
+0166 3139             45     CALL delay_custom
+0168 B287             46     CPL P0.7
+016A 3139             47     CALL delay_custom
+016C D8F6             48     DJNZ R0, PLAY
+016E D000             49     POP 00H
+0170 22               50     RET
+                      51     
+                      52     END
+A51 MACRO ASSEMBLER  PLAY                                                                 02/06/2023 15:42:41 PAGE     2
+
+SYMBOL TABLE LISTING
+------ ----- -------
+
+
+N A M E             T Y P E  V A L U E   ATTRIBUTES
+
+DELAY_50US . . . .  C ADDR   0130H   A   
+DELAY_CUSTOM . . .  C ADDR   0139H   A   
+H1 . . . . . . . .  C ADDR   0134H   A   
+H8 . . . . . . . .  C ADDR   013DH   A   
+MAIN . . . . . . .  C ADDR   0105H   A   
+P0 . . . . . . . .  D ADDR   0080H   A   
+P1 . . . . . . . .  D ADDR   0090H   A   
+PLAY . . . . . . .  C ADDR   0164H   A   
+PLAYSONG . . . . .  C ADDR   0144H   A   
+SETGA. . . . . . .  C ADDR   015EH   A   
+SETMA. . . . . . .  C ADDR   0162H   A   
+SETRE. . . . . . .  C ADDR   015AH   A   
+SETSA. . . . . . .  C ADDR   0156H   A   
+
+
+REGISTER BANK(S) USED: 0 
+
+
+ASSEMBLY COMPLETE.  0 WARNING(S), 0 ERROR(S)

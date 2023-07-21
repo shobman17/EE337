@@ -1,0 +1,67 @@
+A51 MACRO ASSEMBLER  MODARITHMETIC                                                        01/15/2023 23:32:04 PAGE     1
+
+
+MACRO ASSEMBLER A51 V8.2.7.0
+OBJECT MODULE PLACED IN .\Objects\modarithmetic.obj
+ASSEMBLER INVOKED BY: C:\Keil_v5\C51\BIN\A51.EXE modarithmetic.asm SET(SMALL) DEBUG PRINT(.\Listings\modarithmetic.lst) 
+                      OBJECT(.\Objects\modarithmetic.obj) EP
+
+LOC  OBJ            LINE     SOURCE
+
+                       1     
+0000                   2     ORG 0H
+0000 020100            3     LJMP MAIN 
+0100                   4     ORG 100H
+0100                   5     MAIN: 
+0100 7961              6     MOV R1, #61H
+0102 3130              7     CALL MODADD
+0104 313F              8     CALL MODSUB 
+0106 80FE              9     HERE: SJMP HERE
+0130                  10     ORG 130H
+                      11     
+0130                  12     MODADD:
+0130 E570             13     MOV A, 70H
+0132 2571             14     ADD A, 71H
+0134 5002             15     JNC ADDCONT
+                      16     
+0136 243D             17     ADD A, #3DH
+0138                  18     ADDCONT: 
+0138 89F0             19     MOV B, R1
+013A 84               20     DIV AB
+013B 85F072           21     MOV 72H, B
+013E 22               22     RET
+                      23     
+013F                  24     MODSUB:
+013F E570             25     MOV A, 70H
+0141 9571             26     SUBB A, 71H
+0143 5002             27     JNC SUBCONT
+                      28     
+0145 943D             29     SUBB A, #3DH  
+0147                  30     SUBCONT: 
+0147 89F0             31     MOV B, R1
+0149 84               32     DIV AB
+014A 85F073           33     MOV 73H, B
+014D 22               34     RET 
+                      35     
+                      36     END
+A51 MACRO ASSEMBLER  MODARITHMETIC                                                        01/15/2023 23:32:04 PAGE     2
+
+SYMBOL TABLE LISTING
+------ ----- -------
+
+
+N A M E             T Y P E  V A L U E   ATTRIBUTES
+
+ADDCONT. . . . . .  C ADDR   0138H   A   
+B. . . . . . . . .  D ADDR   00F0H   A   
+HERE . . . . . . .  C ADDR   0106H   A   
+MAIN . . . . . . .  C ADDR   0100H   A   
+MODADD . . . . . .  C ADDR   0130H   A   
+MODSUB . . . . . .  C ADDR   013FH   A   
+SUBCONT. . . . . .  C ADDR   0147H   A   
+
+
+REGISTER BANK(S) USED: 0 
+
+
+ASSEMBLY COMPLETE.  0 WARNING(S), 0 ERROR(S)

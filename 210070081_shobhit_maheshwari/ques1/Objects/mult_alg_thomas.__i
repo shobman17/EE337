@@ -1,0 +1,1 @@
+"mult_alg_thomas.c" OPTIMIZE (8,SPEED) BROWSE DEBUG OBJECTEXTEND PRINT(.\Listings\mult_alg_thomas.lst) TABS (2) OBJECT(.\Objects\mult_alg_thomas.obj)

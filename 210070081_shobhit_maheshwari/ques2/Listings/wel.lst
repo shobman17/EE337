@@ -1,0 +1,129 @@
+C51 COMPILER V9.60.7.0   WEL                                                               04/08/2023 16:23:27 PAGE 1   
+
+
+C51 COMPILER V9.60.7.0, COMPILATION OF MODULE WEL
+OBJECT MODULE PLACED IN .\Objects\wel.obj
+COMPILER INVOKED BY: C:\Keil_v5\C51\BIN\C51.EXE wel.c OPTIMIZE(8,SPEED) BROWSE DEBUG OBJECTEXTEND PRINT(.\Listings\wel.l
+                    -st) TABS(2) OBJECT(.\Objects\wel.obj)
+
+line level    source
+
+   1          #include <at89c5131.h>
+   2          #include "lcd.h"
+   3          #include "serial.h"
+   4          
+   5          code unsigned char names[12] = {'D','S','O','A','F','G','D','M','M','D','P','S'};
+   6          unsigned char quant[4] = {'5','5','8','6'};
+   7          code unsigned char max_quant[4] = {'5','5','8','6'};
+   8          unsigned char state,i,input,j,index, quantity;
+   9          
+  10          void main(void) {
+  11   1        
+  12   1        uart_init();
+  13   1        lcd_init();
+  14   1        msdelay(4);
+  15   1        lcd_cmd(0x80);
+  16   1        lcd_write_string("hi");
+  17   1        state = 0; //initial state
+  18   1        while(1){
+  19   2          if (state == 0){ // in initial state
+  20   3            transmit_string("Resources available: ");
+  21   3            for (i = 0; i<4;i++){
+  22   4              for(j = i*3;j<i*3+3;j++){
+  23   5                transmit_char(names[j]);
+  24   5              }
+  25   4              transmit_char('-');
+  26   4              transmit_char(quant[i]);
+  27   4              transmit_char(' ');
+  28   4            }
+  29   3            transmit_string("\r\n");
+  30   3            transmit_string("Press I for Issue and R for Return");
+  31   3            transmit_string("\r\n");
+  32   3            input = receive_char();
+  33   3            if (input == 'I' | input == 'i'){
+  34   4              state = 1; // issue state
+  35   4            } else if (input == 'R' | input == 'r') {
+  36   4              state = 2; // return state
+  37   4            } else {
+  38   4              state = 0; // remain in initial state if wrong key pressed
+  39   4            }
+  40   3          } 
+  41   2          
+  42   2          else if (state == 1) { // issue state
+  43   3            transmit_string("Enter resource to be borrowed: ");
+  44   3            index = receive_char() - 48 - 1;
+  45   3            if (index > 3){
+  46   4              transmit_string("Invalid index");
+  47   4              transmit_string("\r\n");
+  48   4              input = receive_char();
+  49   4              state = 0;
+  50   4              continue;
+  51   4            }
+  52   3            transmit_string("\r\n");
+  53   3            transmit_string("Enter quantity to be borrowed: ");
+  54   3            quantity = receive_char();
+C51 COMPILER V9.60.7.0   WEL                                                               04/08/2023 16:23:27 PAGE 2   
+
+  55   3            transmit_string("\r\n");
+  56   3            if (quantity <= quant[index]){
+  57   4              transmit_string("Requested resource allocated!");
+  58   4              quant[index] = (quant[index] - quantity) + 48;
+  59   4            } else {
+  60   4              transmit_string("Requested resource not available...");
+  61   4            }
+  62   3            transmit_string("\r\n");
+  63   3            state = 0;
+  64   3            input = receive_char();
+  65   3          }
+  66   2          
+  67   2          else if (state == 2) { // return state
+  68   3            transmit_string("Enter resource to be returned: \r\n");
+  69   3            index = receive_char() - 48 - 1;
+  70   3            if (index > 3){
+  71   4              transmit_string("Invalid index");
+  72   4              transmit_string("\r\n");
+  73   4              input = receive_char();
+  74   4              state = 0;
+  75   4              continue;
+  76   4            } else if (quant[index] == max_quant[index]) {
+  77   4              transmit_string("You can't return what you don't have...");
+  78   4              transmit_string("\r\n");
+  79   4              input = receive_char();
+  80   4              state = 0;
+  81   4              continue;
+  82   4            }
+  83   3            
+  84   3            transmit_string("Enter quantity: ");
+  85   3            quantity = receive_char();
+  86   3            transmit_string("\r\n");
+  87   3            if (quantity + quant[index] - 48 > max_quant[index]){
+  88   4              transmit_string("Returned resource out of bounds");
+  89   4              transmit_string("\r\n");
+  90   4              input = receive_char();
+  91   4              state = 0;
+  92   4            } else {
+  93   4              transmit_string("Returned resource received!\r\n");
+  94   4              quant[index] = quant[index] + (quantity - 48);
+  95   4              input = receive_char();
+  96   4              state = 0;
+  97   4            }
+  98   3            
+  99   3          }
+ 100   2          
+ 101   2          else{state = 0;}
+ 102   2        }
+ 103   1      }
+
+
+MODULE INFORMATION:   STATIC OVERLAYABLE
+   CODE SIZE        =    929    ----
+   CONSTANT SIZE    =    376    ----
+   XDATA SIZE       =   ----    ----
+   PDATA SIZE       =   ----    ----
+   DATA SIZE        =     10      11
+   IDATA SIZE       =   ----    ----
+   BIT SIZE         =      2    ----
+END OF MODULE INFORMATION.
+
+
+C51 COMPILATION COMPLETE.  0 WARNING(S),  0 ERROR(S)
